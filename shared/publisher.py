@@ -1,7 +1,13 @@
 import pika
 import time
 
-class Subscriber:
+QUEUE_NAME = 'test'
+
+class Publisher:
+
+    channel = None
+    conn = None
+
     def __init__(self):
         credentials = pika.PlainCredentials('guest', 'guest')
         parameters = pika.ConnectionParameters('rabbitmq',
@@ -13,19 +19,15 @@ class Subscriber:
         except Exception as e:
             time.sleep(10)
             self.conn = pika.BlockingConnection(parameters)
+
         self.channel = self.conn.channel()
-        ##TODO delcare exchanges
-        ##self.channel.exchange_declare(exchange='redis', exchange_type='fanout')
-        ##...
+        self.channel.queue_declare(queue=QUEUE_NAME)
 
-    def subscribe(self, exchange, callback):
-        result = self.channel.queue_declare(queue='', exclusive=True)
-        queue_name = result.method.queue
-        self.channel.queue_bind(exchange=exchange, queue=queue_name)
-        self.channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-        self.channel.start_consuming()
-
-    def close(self):
-        self.conn.close()
 
     
+    def publish(self, message):
+        self.channel.basic_publish(exchange='', routing_key=QUEUE_NAME, body=message.to_json())
+        print(" [x] Sent %r" % message)
+    
+    def close(self):
+        self.conn.close()

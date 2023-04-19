@@ -54,7 +54,7 @@ Aquest tipus d'arquitectura ens permet desacoplar les escriptures de les dades i
 
 * Entendre com treballar amb cues de missatges.
 * Crear una nova aplicació python que consumirà les dades de la cua i les escriurà a les bases de dades.
-* Veure com espot fer servir un sistema de cues de missatges per a desacoplar la lectura i escriptura de dades.
+* Veure com es pot fer servir un sistema de cues de missatges per a desacoplar la lectura i escriptura de dades.
 
 ### RabitMQ
 Per fer el pas de missatges usarem 
@@ -66,8 +66,14 @@ Concretament ens interessa el patró [Publish/Subscriber](https://www.rabbitmq.c
 S'han creat dues classes Publisher i Subscriber que s'encarreguen de fer la comunicació amb la cua de missatges, es troben als fitxers publisher.py i subscriber.py respectivament.
 
 ### Refactorització
-Entre l'endpoint de l'API a controller.py i les funcions del repository.py s'ha de crear la cua de missatges amb RabitMQ de tal manera que el controller cridi al Publisher.py amb el missatge que rep de l'API i amb el tòpic de quin Client de BD ho ha d'executar. El Subscriber.py rebrà aquest tòpic hi haurà de fer la crida al Client de BD tal i com s'estava fent fins ara. 
+
+Aquesta pràctica parteix de l'aplicació que ja coneixem però ens introdueix al paradigme dels seveis distribuïts.
+Per això, veureu que ha aparegut una nova carpeta que recullira els fitxers d'una segona aplicació. Aquesta aplicació s'encarregarà de rebre les dades de la cua de missatges i escriure les dades a les bases de dades.
+
+Entre l'endpoint de l'API a controller.py i les funcions del repository.py s'ha de crear la cua de missatges amb RabitMQ de tal manera que el controller cridi al Publisher.py amb el missatge que rep de l'API i amb el tòpic de quin Client de BD ho ha d'executar. El Subscriber.py rebrà aquest tòpic hi haurà de fer la crida al Client de BD tal i com s'estava fent fins ara.
+
 A `controller.py` teniu comentat un objecte `publisher` de la classe `Publisher` que s'encarregarà de publicar els missatges a la cua de missatges. Creue-lo quan sigui necessari, penseu que el servei de rabbitmq ha d'estar en marxa per a que funcioni.
+
 A `repository.py` teniu comentat un objecte `subscriber` de la classe `Subscriber` per a que es pugui subscriure a la cua de missatges i rebre els missatges que s'envien a la cua.  Creue-lo quan sigui necessari, penseu que el servei de rabbitmq ha d'estar en marxa per a que funcioni.
 
 ### Passar tots els tests creats anteriorment. 
