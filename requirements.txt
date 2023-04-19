@@ -1,0 +1,21 @@
+fastapi==0.91.0
+uvicorn==0.20.0
+python-dotenv==0.21.1
+yoyo-migrations==8.2.0
+# db
+sqlalchemy==2.0.1
+psycopg2-binary==2.9.5
+#redis
+redis==4.5.1
+#mongodb
+pymongo==4.3.3
+#elasticsearch
+elasticsearch==8.6.2
+#cassandra
+cassandra-driver==3.24.0
+#rabbitmq
+pika==1.0.0
+# test
+pytest==7.2.1
+requests==2.28.2
+httpx==0.23.3

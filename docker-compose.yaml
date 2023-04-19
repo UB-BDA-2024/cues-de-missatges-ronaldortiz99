@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: bdda_api
+    build: .
+    command: sh -c 'yoyo list --database postgresql://postgres:postgres@postgreSQL/postgres; yoyo apply --database postgresql://postgres:postgres@postgreSQL/postgres --batch; uvicorn app.main:app --host 0.0.0.0'
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgreSQL
+      - redis
+      - mongodb
+      - elasticsearch
+      - timescale
+      - cassandra
+      - rabbitmq
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: postgreSQL
+      POSTGRES_PORT: 5432
+      TS_USER: timescale
+      TS_PASSWORD: timescale
+      TS_DB: timescale
+      TS_HOST: timescale
+      TS_PORT: 5433
+      REDIS_URL: redis://redis:6379
+      MONGO_URL: mongodb://mongodb:27017
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      CASSANDRA_URL: cassandra://cassandra:9042
+    networks:
+      - app_network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    command: rabbitmq-server
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - rabbitmq_data:/var/lib/rabbitmq
+        - rabbitmq_log:/var/log/rabbitmq
+    networks:
+        - app_network
+  
+  postgreSQL:
+    image: postgres:14-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - app_network
+
+  timescale:
+    image: timescale/timescaledb:latest-pg13
+    volumes:
+      - timescale_data:/var/lib/timescale/data
+    expose:
+      - 5433
+    environment:
+      POSTGRES_USER: timescale
+      POSTGRES_PASSWORD: timescale
+      POSTGRES_DB: timescale
+    ports:
+      - "5433:5433"
+    networks:
+      - app_network
+    command: -p 5433
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/var/lib/redis/data
+    networks:
+      - app_network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/var/lib/mongodb/data/db
+    networks:
+      - app_network
+
+  elasticsearch:
+    image: elasticsearch:8.6.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata:/var/lib/elasticsearch/data
+    networks:
+      - app_network
+
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - 9042:9042
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  mongo_data:
+  timescale_data:
+  esdata:
+    driver: local
+  cassandra_data:
+  rabbitmq_data:
+  rabbitmq_log:
+
+networks:
+  app_network:
+
+ 
