@@ -70,15 +70,25 @@ S'han creat dues classes Publisher i Subscriber que s'encarreguen de fer la comu
 Aquesta pràctica parteix de l'aplicació que ja coneixem però ens introdueix al paradigme dels seveis distribuïts.
 Per això, veureu que ha aparegut una nova carpeta que recullira els fitxers d'una segona aplicació. Aquesta aplicació s'encarregarà de rebre les dades de la cua de missatges i escriure les dades a les bases de dades.
 
-Entre l'endpoint de l'API a controller.py i les funcions del repository.py s'ha de crear la cua de missatges amb RabitMQ de tal manera que el controller cridi al Publisher.py amb el missatge que rep de l'API i amb el tòpic de quin Client de BD ho ha d'executar. El Subscriber.py rebrà aquest tòpic hi haurà de fer la crida al Client de BD tal i com s'estava fent fins ara.
+Veureu que tenim un nou paquet anomenat `consumer` i un altre anomenat `shared`. A dins del paquet `shared`hi haurà tot aquell
+codi que es pugui reutilitzar entre les dues aplicacions. A dins del paquet `consumer` hi haurà tot el codi que s'encarregarà de rebre les dades de la cua de missatges i escriure les dades a les bases de dades.
 
-A `controller.py` teniu comentat un objecte `publisher` de la classe `Publisher` que s'encarregarà de publicar els missatges a la cua de missatges. Creue-lo quan sigui necessari, penseu que el servei de rabbitmq ha d'estar en marxa per a que funcioni.
+La idea de la pràctica és separar les escriputres de les dades dels sensors de les seves lectures. Per això, la API pública només s'encarregarà de rebre les dades dels sensors i publicar-les a la cua de missatges.
 
-A `repository.py` teniu comentat un objecte `subscriber` de la classe `Subscriber` per a que es pugui subscriure a la cua de missatges i rebre els missatges que s'envien a la cua.  Creue-lo quan sigui necessari, penseu que el servei de rabbitmq ha d'estar en marxa per a que funcioni.
+La nova aplicació consumer s'encarregarà de rebre les dades de la cua de missatges i escriure les dades a les diferents bases de dades que hem anat fent servir a la resta de pràctiques.
+
+A `controller.py` teniu un objecte `publisher` de la classe `Publisher` que s'encarregarà de publicar els missatges a la cua de missatges. Creue-lo quan sigui necessari, penseu que el servei de rabbitmq ha d'estar en marxa per a que funcioni.
+
+Al `main.py` de la carpeta `consumer` teniu un exemple de com es pot fer servir la classe `Subscriber` per a rebre les dades de la cua de missatges. Aquest exemple s'encarrega de rebre les dades de la cua de missatges.
+
+Podeu prendre dues decisions a l'hora d'implementar l'arquitectura:
+
+- Una única cua de missatges per a totes les bases de dades.
+- Una cua per a cada tipus de base de dades (més escalable).
 
 ### Passar tots els tests creats anteriorment. 
 
-Proveu tots els tests fets en les entregues anteriors per tal de veure que l'aplicació fuciona correctament. 
+Idealment, podeu probar els tests de les anteriors pràctiques per a comprobar que tot segueix funcionant igual. 
 
 * Afegiu tots els fitxers `controller_test.py` la carpeta de tests. Renombreu-los segons el nom de cada pràctica 
 *  A continuació fes servir el següent comandament, per executar-los tots:
@@ -106,13 +116,10 @@ git push
 
 Aquesta pràctica té una puntuació màxima de 10 punts. La puntuació es repartirà de la següent manera:
 
-- 6 punts: Correcta execució dels tests. 
+- 6 punts: Correcta implementació del consumidor i el publicador. 
 - 2 punts: L'estil del codi i la seva estructura i documentació.
-- 2 punts: La correcta implementació de la funcionalitat.
+- 2 punts: Correcta execució dels tests anterioris.
 
-## Qüestionari d'avaluació de cada pràctica
-
-Cada pràctica té un qüestionari d'avaluació. Aquest qüestionari ens permet avaluar el coneixement teòric i de comprensió de la pràctica. És obligatori i forma part de l'avaluació continua de l'assignatura. Per contestar el qüestionari, has d'anar al campus virtual de l'assignatura i anar a la secció de qüestionaris.
  
 
 
