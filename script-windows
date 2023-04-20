@@ -1,0 +1,5 @@
+
+$path = pwd
+$env:PYTHONPATH += $path 
+pip install -r .\requirements.txt 
+python.exe .\consumer\main.py 
