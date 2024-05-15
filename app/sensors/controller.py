@@ -151,7 +151,7 @@ def get_data(sensor_id: int, request: Request, to: str = None, bucket: str = Non
         from_date = full_url.split('?')[1].split('&')[0].split('=')[1]
         return repository.get_data(ts=timescale,from_date=from_date,to=to,bucket=bucket,sensor_id=sensor_id)
     else:
-        return repository.get_data_redis(db=db,sensor_id=sensor_id)
+        return repository.get_data_redis(db=db,sensor_id=sensor_id,redis=redis_client)
 
 
 
