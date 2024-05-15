@@ -116,7 +116,7 @@ def test_update_sensor_1_data():
     assert response.status_code == 200
 
 def test_update_sensor_2_data():
-    response = client.post("/sensors/2/data", json={"velocity": 46.0,"battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
+    response = client.post("/sensors/2/data", json={"velocity": 46.0,"battery_level": 1.9, "last_seen": "2020-01-01T00:01:00.000Z"})
     assert response.status_code == 200
 
 def test_get_sensor_1_data_updated():
