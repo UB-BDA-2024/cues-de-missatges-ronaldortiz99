@@ -249,19 +249,19 @@ def search_sensors(db: Session,mongodb: MongoDBClient, query: str, size: int, se
         name = hit['_source']['name']
         id = db.query(models.Sensor).filter(models.Sensor.name == name).first().id
         doc_sensor = get_sensor_collection_by_name(name=name,mongodb_client=mongodb)
-        ret_sensor = schemas.SensorReturn(
-            id = id,
-            name=name,
-            longitude=doc_sensor.longitude,
-            latitude=doc_sensor.latitude,
-            type=doc_sensor.type,
-            mac_address=doc_sensor.mac_address,
-            manufacturer=doc_sensor.manufacturer,
-            model=doc_sensor.model,
-            serie_number=doc_sensor.serie_number,
-            firmware_version=doc_sensor.firmware_version,
-            description=doc_sensor.description
-        )
+        ret_sensor = {
+            'id': id,
+            'name': name,
+            'latitude': doc_sensor.latitude,
+            'longitude': doc_sensor.longitude,
+            'type': doc_sensor.type,
+            'mac_address': doc_sensor.mac_address,
+            'manufacturer': doc_sensor.manufacturer,
+            'model': doc_sensor.model,
+            'serie_number': doc_sensor.serie_number,
+            'firmware_version': doc_sensor.firmware_version,
+            'description': doc_sensor.description
+        }
         query_sensors.append(ret_sensor)
     
     return query_sensors
