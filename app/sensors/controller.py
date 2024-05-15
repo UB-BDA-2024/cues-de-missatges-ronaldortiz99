@@ -63,8 +63,6 @@ def get_cassandra_client():
     finally:
         cassandra.close()
 
-publisher = Publisher()
-
 router = APIRouter(
     prefix="/sensors",
     responses={404: {"description": "Not found"}},
