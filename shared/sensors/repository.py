@@ -410,8 +410,12 @@ def get_data_redis(db: Session,redis: Session, sensor_id: int):
     db_sensor = db.query(models.Sensor).filter(models.Sensor.id == sensor_id).first()
     data_json = redis.get(sensor_id)
     data = convertToLastData(data_json)
-    db_sensor.temperature = data.temperature
-    db_sensor.humidity = data.humidity
-    db_sensor.battery_level = data.battery_level
-    db_sensor.last_seen = data.last_seen
-    return db_sensor
+    return {
+        'id' : db_sensor.id,
+        'name': db_sensor.name,
+        'velocity': data.velocity,
+        'temperature': data.temperature,
+        'humidity': data.humidity,
+        'battery_level': data.battery_level,
+        'last_seen': data.last_seen
+    }
