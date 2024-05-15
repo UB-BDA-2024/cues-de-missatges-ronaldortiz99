@@ -30,7 +30,7 @@ def clear_db():
      es = ElasticsearchClient(host="elasticsearch")
      es.clearIndex("sensors")  
      ts = Timescale()
-     ts.execute("DELETE FROM sensor_data")
+     ts.execute("DROP TABLE IF EXISTS sensor_data")
      ts.close()
 
      while True:
@@ -43,7 +43,6 @@ def clear_db():
             time.sleep(5)
 
 @pytest.fixture(scope="session", autouse=True)   
-
 def test_create_sensor_temperatura():
      """A sensor can be properly created"""
      response = client.post("/sensors", json={"name": "Sensor Temperatura 1", "latitude": 1.0, "longitude": 1.0, "type": "Temperatura", "mac_address": "00:00:00:00:00:00", "manufacturer": "Dummy", "model":"Dummy Temp", "serie_number": "0000 0000 0000 0000", "firmware_version": "1.0", "description": "Sensor de temperatura model Dummy Temp del fabricant Dummy"})
@@ -112,11 +111,11 @@ def test_get_sensor_data_not_exists():
     assert "Sensor not found" in response.text
 
 def test_update_sensor_1_data():
-    response = client.post("/sensors/1/data", json={"temperature": 2.0, "humidity": 2.0, "battery_level": 1.9, "last_seen": "2020-01-01T00:01:00.000Z"})
+    response = client.post("/sensors/1/data", json={"temperature": 2.0, "humidity": 2.0, "battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
     assert response.status_code == 200
 
 def test_update_sensor_2_data():
-    response = client.post("/sensors/2/data", json={"velocity": 46.0,"battery_level": 1.9, "last_seen": "2020-01-01T00:01:00.000Z"})
+    response = client.post("/sensors/2/data", json={"velocity": 46.0,"battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
     assert response.status_code == 200
 
 def test_get_sensor_1_data_updated():
