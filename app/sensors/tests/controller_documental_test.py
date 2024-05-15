@@ -112,7 +112,7 @@ def test_get_sensor_data_not_exists():
     assert "Sensor not found" in response.text
 
 def test_update_sensor_1_data():
-    response = client.post("/sensors/1/data", json={"temperature": 2.0, "humidity": 2.0, "battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
+    response = client.post("/sensors/1/data", json={"temperature": 2.0, "humidity": 2.0, "battery_level": 1.9, "last_seen": "2020-01-01T00:01:00.000Z"})
     assert response.status_code == 200
 
 def test_update_sensor_2_data():
