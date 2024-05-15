@@ -218,7 +218,7 @@ def get_sensors_near(db: Session, mongodb_client: MongoDBClient, redis: Session,
     
     for col in query:
         id = db.query(models.Sensor).filter(models.Sensor.name == col['name']).first().id
-        query_data.append(get_data_redis(redis=redis, sensor_id=id, db=db, mongodb_client=mongodb_client))
+        query_data.append(get_data_redis(redis=redis, sensor_id=id, db=db))
 
     return query_data
 
