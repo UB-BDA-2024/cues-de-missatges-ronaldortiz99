@@ -64,8 +64,7 @@ def record_data(db: Session, mongodb_client: MongoDBClient, redis: Session, sens
     sensor = db.query(models.Sensor).filter(models.Sensor.id == sensor_id).first()
     data_json = convertToJSON(data)
     redis.set(sensor_id, data_json)
-    #add_temporal_data(sensor_id=sensor_id,data=data,timescale=timescale) 
-    #En el test se añaden datos al mismo sensor con la misma fecha y vulnera la primary key de timescale por eso lo comento
+    add_temporal_data(sensor_id=sensor_id,data=data,timescale=timescale) 
     doc_sensor = get_sensor_collection_by_name(name=sensor.name,mongodb_client=mongodb_client)
     post_data_cassandra(sensor_id=sensor_id,type_=doc_sensor.type, data= data, cassandra=cassandra)
     db_sensor = schemas.Sensor(
