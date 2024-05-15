@@ -31,6 +31,7 @@ def clear_db():
      es.clearIndex("sensors")  
      ts = Timescale()
      ts.execute("DELETE FROM sensor_data")
+     ts.execute("commit")
      ts.close()
 
      while True:
