@@ -70,7 +70,7 @@ def test_post_sensor_data_temperatura_1():
     assert response.status_code == 200
 
 def test_post_sensor_data_temperatura_2():
-    response = client.post("/sensors/1/data", json={"temperature": 4.0, "humidity": 1.0, "battery_level": 1.0, "last_seen": "2020-01-01T00:00:00.000Z"})
+    response = client.post("/sensors/1/data", json={"temperature": 4.0, "humidity": 1.0, "battery_level": 1.0, "last_seen": "2020-01-01T00:00:01.000Z"})
     assert response.status_code == 200
 
 def test_post_sensor_data_temperatura_3():
@@ -78,7 +78,7 @@ def test_post_sensor_data_temperatura_3():
     assert response.status_code == 200
 
 def test_post_sensor_data_temperatura_4():
-    response = client.post("/sensors/4/data", json={"temperature": 17.0, "humidity": 1.0, "battery_level": 1.0, "last_seen": "2020-01-02T00:00:00.000Z"})
+    response = client.post("/sensors/4/data", json={"temperature": 17.0, "humidity": 1.0, "battery_level": 1.0, "last_seen": "2020-01-02T00:00:01.000Z"})
     assert response.status_code == 200
 
 
