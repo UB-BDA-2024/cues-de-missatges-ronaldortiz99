@@ -4,7 +4,7 @@ services:
   api:
     container_name: bdda_api
     build: .
-    command: sh -c 'yoyo list --database postgresql://postgres:postgres@postgreSQL/postgres; yoyo apply --database postgresql://postgres:postgres@postgreSQL/postgres --batch; uvicorn app.main:app --host 0.0.0.0'
+    command: sh -c 'yoyo list --database postgresql://postgres:postgres@postgreSQL/postgres; yoyo apply --database postgresql://postgres:postgres@postgreSQL/postgres --batch;  yoyo list --database postgresql://timescale:timescale@timescale:5433/timescale ./migrations_ts; yoyo apply --database postgresql://timescale:timescale@timescale:5433/timescale ./migrations_ts --batch; uvicorn app.main:app --host 0.0.0.0'
     volumes:
       - .:/app
     ports:
