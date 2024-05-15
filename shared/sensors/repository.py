@@ -147,16 +147,16 @@ def convertToLastData(value):
     )
 def add_index(sensor: schemas.SensorCreate, es: ElasticsearchClient):
     es_index_name = 'sensors'
-    #if not es.index_exists('sensors'):
-    es.create_index("sensors")
-    mapping = {
-        'properties': {
-            'name': {'type': 'keyword'},
-            'description': {'type': 'text'},
-            'type': {'type': 'text'}
+    if not es.index_exists('sensors'):
+        es.create_index("sensors")
+        mapping = {
+            'properties': {
+                'name': {'type': 'keyword'},
+                'description': {'type': 'text'},
+                'type': {'type': 'text'}
+            }
         }
-    }
-    es.create_mapping("sensors",mapping)
+        es.create_mapping("sensors",mapping)
     es_doc = {
         'name': sensor.name,
         'description': sensor.description,
