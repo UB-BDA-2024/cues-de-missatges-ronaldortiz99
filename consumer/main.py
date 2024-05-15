@@ -1,13 +1,11 @@
-import json
+import fastapi
+from app.sensors.controller import router as sensorsRouter
 
-from shared.subscriber import Subscriber
+app = fastapi.FastAPI(title="Senser", version="0.1.0-alpha.1")
 
-subscriber = Subscriber()
+app.include_router(sensorsRouter)
 
-
-def callback(ch, method, properties, body):
-    data = json.loads(body)
-    print("Received data:", data)
-
-
-subscriber.subscribe(callback)
+@app.get("/")
+def index():
+    #Return the api name and version
+    return {"name": app.title, "version": app.version}
