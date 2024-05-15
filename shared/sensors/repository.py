@@ -13,24 +13,21 @@ from shared.cassandra_client import CassandraClient
 
 def get_sensor(db: Session, sensor_id: int, mongodb_client: MongoDBClient) -> Optional[models.Sensor]:
     db_sensor = db.query(models.Sensor).filter(models.Sensor.id == sensor_id).first()
-    if mongodb_client:
-        doc_sensor = get_sensor_collection_by_name(name=db_sensor.name,mongodb_client=mongodb_client)
-        ret_sensor = schemas.SensorReturn(
-            id = db_sensor.id,
-            name=doc_sensor.name,
-            longitude=doc_sensor.longitude,
-            latitude=doc_sensor.latitude,
-            type=doc_sensor.type,
-            mac_address=doc_sensor.mac_address,
-            manufacturer=doc_sensor.manufacturer,
-            model=doc_sensor.model,
-            serie_number=doc_sensor.serie_number,
-            firmware_version=doc_sensor.firmware_version,
-            description=doc_sensor.description
-        )
-        return ret_sensor
-    else:
-        return db_sensor
+    doc_sensor = get_sensor_collection_by_name(name=db_sensor.name,mongodb_client=mongodb_client)
+    ret_sensor = schemas.SensorReturn(
+        id = db_sensor.id,
+        name=doc_sensor.name,
+        longitude=doc_sensor.longitude,
+        latitude=doc_sensor.latitude,
+        type=doc_sensor.type,
+        mac_address=doc_sensor.mac_address,
+        manufacturer=doc_sensor.manufacturer,
+        model=doc_sensor.model,
+        serie_number=doc_sensor.serie_number,
+        firmware_version=doc_sensor.firmware_version,
+        description=doc_sensor.description
+    )
+    return ret_sensor
     
 def check_id(db: Session, sensor_id: int):
     return db.query(models.Sensor).filter(models.Sensor.id == sensor_id).first()
