@@ -32,6 +32,9 @@ class ElasticsearchClient:
     def index_document(self, index_name, document):
         return self.client.index(index=index_name, document=document)
     
+    def index_exists(self, index_name):
+        return self.client.indices.exists(index=index_name)
+    
 
     
     
